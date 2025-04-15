@@ -69,17 +69,35 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
   terminal_buffer[index] = vga_entry(c, color);
 }
 
+void terminal_scroll() {
+  terminal_row--;
+  for (size_t y = 1; y < VGA_HEIGHT; y++) {
+    for (size_t x = 0; x < VGA_WIDTH; x++) {
+      const size_t index = y * VGA_WIDTH + x;
+      const size_t target_index = (y - 1) * VGA_WIDTH + x;
+      terminal_buffer[target_index] = terminal_buffer[index];
+    }
+  }
+  for (size_t x = 0; x < VGA_WIDTH; x++) {
+    const size_t index = (VGA_HEIGHT - 1) * VGA_WIDTH + x;
+    terminal_buffer[index] = vga_entry(' ', terminal_color);
+  }
+}
+
 void terminal_putchar(char c) {
   if (c == '\n') {
-    terminal_row++;
     terminal_column = 0;
+    if (++terminal_row == VGA_HEIGHT) {
+      terminal_scroll();
+    }
     return;
   }
   terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
   if (++terminal_column == VGA_WIDTH) {
     terminal_column = 0;
-    if (++terminal_row == VGA_HEIGHT)
-      terminal_row = 0;
+    if (++terminal_row == VGA_HEIGHT) {
+      terminal_scroll();
+    }
   }
 }
 
@@ -94,5 +112,9 @@ void kernel_main(void) {
   /* Initialize terminal interface */
   terminal_initialize();
 
-  terminal_writestring("Vo1dix v0.0.1\n(c) 2025 Filip Myslinski");
+  terminal_setcolor(vga_entry_color(VGA_COLOR_MAGENTA, VGA_COLOR_BLACK));
+  terminal_writestring("Vo1dix ");
+
+  terminal_setcolor(vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK));
+  terminal_writestring("v0.0.1\n(c) 2025 Filip Myslinski");
 }
