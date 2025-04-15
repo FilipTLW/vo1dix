@@ -1,5 +1,5 @@
 OBJS = out/boot.o out/kernel.o
-CFLAGS = -T linker/linker.ld -o out/vo1dix.bin -ffreestanding -O2 -nostdlib -lgcc
+CFLAGS = -ffreestanding -O2 -nostdlib -lgcc
 CRTI_OBJ = out/crti.o
 CRTBEGIN_OBJ := $(shell i686-elf-gcc $(CFLAGS) $(OBJS) --print-file-name=crtbegin.o)
 CRTEND_OBJ := $(shell i686-elf-gcc $(CFLAGS) $(OBJS) --print-file-name=crtend.o)
@@ -8,7 +8,7 @@ CRTN_OBJ = out/crtn.o
 OBJ_LINK_LIST := $(CRTI_OBJ) $(CRTBEGIN_OBJ) $(OBJS) $(CRTEND_OBJ) $(CRTN_OBJ)
 
 qemu_iso: $(OBJ_LINK_LIST) out/iso/boot/grub/grub.cfg
-	i686-elf-gcc $(CFLAGS) $(OBJ_LINK_LIST)
+	i686-elf-gcc -T linker/linker.ld -o out/vo1dix.bin $(CFLAGS) $(OBJ_LINK_LIST)
 	cp out/vo1dix.bin out/iso/boot/vo1dix.bin
 	grub-mkrescue -o out/vo1dix.iso out/iso
 
