@@ -113,6 +113,19 @@ void kernel_main(void) {
   terminal_initialize();
 
   terminal_setcolor(vga_entry_color(VGA_COLOR_MAGENTA, VGA_COLOR_BLACK));
+  terminal_writestring("            ____    .___.__        \n");
+  terminal_setcolor(vga_entry_color(VGA_COLOR_LIGHT_MAGENTA, VGA_COLOR_BLACK));
+  terminal_writestring("___  ______/_   | __| _/|__|__  ___\n");
+  terminal_setcolor(vga_entry_color(VGA_COLOR_MAGENTA, VGA_COLOR_BLACK));
+  terminal_writestring("\\  \\/ /  _ \\|   |/ __ | |  \\  \\/  /\n");
+  terminal_setcolor(vga_entry_color(VGA_COLOR_LIGHT_MAGENTA, VGA_COLOR_BLACK));
+  terminal_writestring(" \\   (  <_> )   / /_/ | |  |>    < \n");
+  terminal_setcolor(vga_entry_color(VGA_COLOR_MAGENTA, VGA_COLOR_BLACK));
+  terminal_writestring("  \\_/ \\____/|___\\____ | |__/__/\\_ \\\n");
+  terminal_setcolor(vga_entry_color(VGA_COLOR_LIGHT_MAGENTA, VGA_COLOR_BLACK));
+  terminal_writestring("                     \\/          \\/\n");
+  terminal_setcolor(vga_entry_color(VGA_COLOR_MAGENTA, VGA_COLOR_BLACK));
+
   terminal_writestring("Vo1dix ");
 
   terminal_setcolor(vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK));
