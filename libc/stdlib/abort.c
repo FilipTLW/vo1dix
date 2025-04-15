@@ -4,7 +4,7 @@
 __attribute__((__noreturn__))
 void abort(void) {
 #if defined(__is_libk)
-  printf("kernel: panic: abort()\n");
+  panic("abort()");
   asm volatile("hlt"); // halt the CPU TODO: implement proper panic logic
 #else
   printf("abort()\n");

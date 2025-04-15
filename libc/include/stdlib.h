@@ -6,4 +6,6 @@
 __attribute__((__noreturn__))
 void abort(void);
 
+void panic(const char *);
+
 #endif
