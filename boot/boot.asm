@@ -24,6 +24,9 @@ _start:
   mov esp, stack_top                                ; initialize stack pointer to the beginning of the stack
                                                     ; because the stack grows downwards it has to be the
                                                     ; top of the stack
+  extern _init
+  call _init
+
   extern kernel_main
   call kernel_main                                  ; continue execution in kernel.c
 
