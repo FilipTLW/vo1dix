@@ -9,6 +9,6 @@ void abort(void) {
 #else
   printf("abort()\n");
 #endif
-  while (1) { }
+  while (1);
   __builtin_unreachable();
 }
