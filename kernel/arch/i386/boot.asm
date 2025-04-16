@@ -1,14 +1,25 @@
 MBALIGN     equ   1 << 0                            ; multiboot constants
 MEMINFO     equ   1 << 1
-MBFLAGS     equ   MBALIGN | MEMINFO
+VMTINFO     equ   1 << 2
+MBFLAGS     equ   MBALIGN | MEMINFO | VMTINFO
 MAGIC       equ   0x1BADB002
 CHECKSUM    equ   -(MAGIC + MBFLAGS)
+GRAPH_MODE  equ   0
 
 section .multiboot                                  ; multiboot header, will be at the beginning of the binary
 align 4
   dd MAGIC
   dd MBFLAGS
   dd CHECKSUM
+  dd 0                                              ; header_addr non relevant
+  dd 0                                              ; load_addr non relevant
+  dd 0                                              ; load_end_addr non relevant
+  dd 0                                              ; bss_end_addr non relevant
+  dd 0                                              ; entry_addr non relevant
+  dd GRAPH_MODE                                     ; mode_type set to linear graphics mode
+  dd 320
+  dd 200
+  dd 8
 
 section .bss                                        ; uninitialized data (read-write)
 align 16
@@ -24,6 +35,7 @@ _start:
   mov esp, stack_top                                ; initialize stack pointer to the beginning of the stack
                                                     ; because the stack grows downwards it has to be the
                                                     ; top of the stack
+  push ebx
   extern _init
   call _init
 

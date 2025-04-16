@@ -48,7 +48,7 @@ $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
 
 .PHONY: all clean install install-headers install-kernel
-.SUFFIXES: .o .c .asm
+.SUFFIXES: .o .c .asm .psf
 
 all: vo1dix.kernel
 
@@ -64,6 +64,9 @@ $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 
 .asm.o:
 	nasm -felf32 $< -o $@
+
+.psf.o:
+	objcopy -O elf32-i386 -B $(HOSTARCH) -I binary $< $@
 
 clean:
 	rm -f vo1dix.kernel

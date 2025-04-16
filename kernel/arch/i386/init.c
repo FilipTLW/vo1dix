@@ -1,10 +1,13 @@
 #include <kernel/init.h>
 #include <kernel/tty.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "vga.h"
+#include "psf.h"
 
-void arch_init(void) {
+extern char _binary_arch_i386_font_inconsolata_16r_psf_start;
+void arch_init(void* info) {
   terminal_setcolor(vga_entry_color(VGA_COLOR_MAGENTA, VGA_COLOR_BLACK));
   printf("            ____    .___.__        \n");
   terminal_setcolor(vga_entry_color(VGA_COLOR_LIGHT_MAGENTA, VGA_COLOR_BLACK));

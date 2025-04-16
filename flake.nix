@@ -13,6 +13,10 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      bochs = pkgs.bochs.override {
+        wxGTK32 = pkgs.wxGTK32;
+        enableWx = true;
+      };
     in
     {
       devShells.${system} = {
@@ -27,6 +31,7 @@
             grub2
             xorriso
             qemu
+            bochs
           ];
         };
       };
