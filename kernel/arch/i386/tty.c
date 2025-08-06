@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include <kernel/tty.h>
+#include <kernel/debug.h>
 #include "vga.h"
 #include "psf.h"
 
@@ -24,6 +25,7 @@ static uint16_t *framebuffer;
 * It also clears the whole buffer.
 */
 void terminal_initialize(void) {
+  kdbg_log("terminal", "Initializing terminal");
   terminal_row = 0;
   terminal_column = 0;
   terminal_rows = psf_rows(VGA_HEIGHT);
@@ -36,6 +38,7 @@ void terminal_initialize(void) {
       psf_putchar(' ', x, y, terminal_color & 0b00001111, terminal_color >> 4);
     }
   }
+  kdbg_log("terminal", "Initialized terminal");
 }
 
 /**
