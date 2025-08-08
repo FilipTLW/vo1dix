@@ -1,10 +1,9 @@
 #include <stdlib.h>
 
-void itoa(int d, char *buf) {
+void itoa(int d, char *buf, int base) {
   char *p = buf;
   char *p1, *p2;
   unsigned long ud = d;
-  int divisor = 10;
 
   if (d < 0) {
       *p++ = '-';
@@ -13,11 +12,11 @@ void itoa(int d, char *buf) {
   }
 
   do {
-    int remainder = ud % divisor;
+    int remainder = ud % base;
 
     *p++ = (remainder < 10) ? remainder + '0' : remainder + 'a' - 10;
   }
-  while (ud /= divisor);
+  while (ud /= base);
 
   *p = 0;
 

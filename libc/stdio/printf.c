@@ -66,13 +66,24 @@ int printf(const char *restrict format, ...) {
       format++;
       int d = va_arg(parameters, int);
       char buf[11];
-      itoa(d, buf);
+      itoa(d, buf, 10);
       size_t len = strlen(buf);
       if (maxrem < len) {
         return -1;
       }
       if (!print(buf, len))
         return -1;
+      written += len;
+    } else if (*format == 'x') {
+      format++;
+      int x = va_arg(parameters, int);
+      char buf[11];
+      itoa(x, buf, 16);
+      size_t len = strlen(buf);
+      if (maxrem < len) {
+        return -1;
+      }
+      print(buf, len);
       written += len;
     } else {
       format = format_begun_at;

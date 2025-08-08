@@ -2,6 +2,7 @@
 #include "serial_ports.h"
 #include <sys/io.h>
 #include <stdint.h>
+#include <kernel/debug.h>
 
 void serial_init(uint16_t port) {
 	// Disable interrupts
@@ -13,6 +14,8 @@ void serial_init(uint16_t port) {
 	outb(0x0, port + COM_OFFSET_BAUDH);
 	// Set DLAB bit to 0, set data bits to 7, set stop bits to 1, set parity to none
 	outb(0b00000010, port + COM_OFFSET_LCR);
+
+	kdbg_log("serial", "Initialized serial port at 0x%x", port);
 }
 
 void serial_putc(uint16_t port, uint8_t c) {

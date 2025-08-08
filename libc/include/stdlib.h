@@ -9,6 +9,6 @@ void abort(void);
 __attribute__((__noreturn__))
 void panic(const char *);
 
-void itoa(int, char *);
+void itoa(int, char *, int);
 
 #endif

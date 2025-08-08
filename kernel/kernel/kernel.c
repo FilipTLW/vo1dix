@@ -16,5 +16,5 @@ void kernel_main(void *info) {
 	/* Initialize architecture specific stuff */
 	arch_init(info);
 
-	kdbg_log("kernel", "vo1dix kernel initialzed.");
+	kdbg_log("kernel", "vo1dix kernel initialzed");
 }

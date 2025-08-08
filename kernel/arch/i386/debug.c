@@ -1,4 +1,5 @@
 #include <kernel/debug.h>
+#include "bda.h"
 #include "serial.h"
 #include "serial_ports.h"
 #include <limits.h>
@@ -7,15 +8,18 @@
 #include <string.h>
 #include <stdlib.h>
 
-static bool print(const char *data, size_t length) {
+static uint16_t COM1;
+
+static void print(const char *data, size_t length) {
 	const unsigned char *bytes = (const unsigned char *) data;
 	for (size_t i = 0; i < length; i++)
 		serial_putc(COM1, bytes[i]);
 }
 
 void kdbg_init() {
+	COM1 = bios_data->com1;
 	serial_init(COM1);
-	kdbg_log("kdbg", "Initialized kdbg on COM1.");
+	kdbg_log("kdbg", "Initialized kdbg on COM1");
 }
 
 void kdbg_write(const char *restrict format, ...) {
@@ -35,7 +39,7 @@ void kdbg_write(const char *restrict format, ...) {
         amount++;
       if (maxrem < amount) {
         // TODO: Set errno to EOVERFLOW.
-        return -1;
+        return;
       }
       print(format, amount);
       format += amount;
@@ -50,10 +54,10 @@ void kdbg_write(const char *restrict format, ...) {
       char c = (char) va_arg(parameters, int /* char promotes to int */);
       if (!maxrem) {
         // TODO: Set errno to EOVERFLOW.
-        return -1;
+        return;
       }
       print(&c, sizeof(c));
-        return -1;
+        return;
       written++;
     } else if (*format == 's') {
       format++;
@@ -61,7 +65,7 @@ void kdbg_write(const char *restrict format, ...) {
       size_t len = strlen(str);
       if (maxrem < len) {
         // TODO: Set errno to EOVERFLOW.
-        return -1;
+        return;
       }
       print(str, len);
       written += len;
@@ -69,10 +73,21 @@ void kdbg_write(const char *restrict format, ...) {
       format++;
       int d = va_arg(parameters, int);
       char buf[11];
-      itoa(d, buf);
+      itoa(d, buf, 10);
       size_t len = strlen(buf);
       if (maxrem < len) {
-        return -1;
+        return;
+      }
+      print(buf, len);
+      written += len;
+    } else if (*format == 'x') {
+      format++;
+      int x = va_arg(parameters, int);
+      char buf[11];
+      itoa(x, buf, 16);
+      size_t len = strlen(buf);
+      if (maxrem < len) {
+        return;
       }
       print(buf, len);
       written += len;
@@ -81,7 +96,7 @@ void kdbg_write(const char *restrict format, ...) {
       size_t len = strlen(format);
       if (maxrem < len) {
         // TODO: Set errno to EOVERFLOW.
-        return -1;
+        return;
       }
       print(format, len);
       written += len;

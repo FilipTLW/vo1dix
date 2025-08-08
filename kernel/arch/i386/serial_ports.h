@@ -1,9 +1,6 @@
 #ifndef ARCH_I386_SERIAL_PORTS_H
 #define ARCH_I386_SERIAL_PORTS_H
 
-#define COM1 0x3f8
-#define COM2 0x2f8
-
 #define COM_OFFSET_RX 0
 #define COM_OFFSET_TX 0
 #define COM_OFFSET_INT 1
